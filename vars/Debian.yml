@@ -5,3 +5,4 @@ mtproxy_dependencies:
 - zlib1g-dev
 - git
 - cron
+- libcap2-bin
