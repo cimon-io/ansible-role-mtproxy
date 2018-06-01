@@ -1,0 +1,48 @@
+---
+mtproxy_version: "master"
+mtproxy_source: "https://github.com/TelegramMessenger/MTProxy.git"
+mtproxy_source_path: "/usr/local/src/mtproxy"
+
+mtproxy_config_path: "/etc/mtproxy"
+
+mtproxy_service_name: "mtproxy"
+mtproxy_enabled: True
+
+# 0 - disabled
+mtproxy_ipv6: False
+mtproxy_max_special_connections: 0
+mtproxy_http_ports: [8443]
+mtproxy_slaves: 0
+mtproxy_proxy_tag: ""
+mtproxy_mtproto_secret: ""
+mtproxy_ping_interval: 5
+mtproxy_window_clamp: 0
+mtproxy_backlog: 0
+mtproxy_connections: 0
+mtproxy_log: ""
+mtproxy_port: 8888
+mtproxy_user: "mtproxy"
+mtproxy_verbosity: 0
+mtproxy_aes_pwd: "{{ mtproxy_config_path }}/proxy-secret"
+mtproxy_config: "{{ mtproxy_config_path }}/proxy-multi.conf"
+mtproxy_msg_buffers_size: 268435456
+mtproxy_disable_tcp: False
+mtproxy_crc32c: False
+mtproxy_cpu_threads: 8
+mtproxy_io_threads: 16
+mtproxy_allow_skip_dh: False
+mtproxy_force_dh: False
+mtproxy_max_accept_rate: 0
+mtproxy_max_dh_accept_rate: 0
+mtproxy_multithread: False
+mtproxy_tcp_cpu_threads: 0
+mtproxy_tcp_iothreads: 0
+mtproxy_nat_info: ""
+mtproxy_address: ""
+
+mtproxy_limit_nofile: 10000
+
+mtproxy_config_update: True
+
+ansible_become: yes
+apt_cache_valid_time: 86400

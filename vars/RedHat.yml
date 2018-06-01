@@ -1,0 +1,8 @@
+---
+mtproxy_dependencies:
+- zlib-devel
+- gcc
+- make
+- openssl-devel
+- git
+- cronie

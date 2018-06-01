@@ -1,0 +1,7 @@
+---
+mtproxy_dependencies:
+- build-essential
+- libssl-dev
+- zlib1g-dev
+- git
+- cron

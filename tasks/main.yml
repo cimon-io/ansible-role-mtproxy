@@ -1,0 +1,124 @@
+---
+- include_vars: "{{ item }}"
+  with_first_found:
+    - "../vars/{{ ansible_os_family }}.yml"
+    - "../vars/os_defaults.yml"
+  tags: [mtproxy, mtproxy-install]
+
+- name: "create group for mtproxy user"
+  group:
+    name: "{{ mtproxy_user }}"
+    system: yes
+  tags: [mtproxy, mtproxy-install, mtproxy-configure]
+
+- name: "create mtproxy user"
+  user:
+    name: "{{ mtproxy_user }}"
+    group: "{{ mtproxy_user }}"
+    system: yes
+    create_home: no
+  tags: [mtproxy, mtproxy-install, mtproxy-configure]
+
+- name: "create dirs"
+  file:
+    path: "{{ item }}"
+    mode: 0750
+    owner: "{{ mtproxy_user }}"
+    group: "{{ mtproxy_user }}"
+    state: directory
+  with_items:
+    - "{{ mtproxy_config_path }}"
+  tags: [mtproxy, mtproxy-install]
+
+- name: "install dependencies with apt"
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    cache_valid_time: "{{ apt_cache_valid_time }}"
+  with_items:
+    - "{{ mtproxy_dependencies }}"
+  when: ansible_os_family == "Debian"
+  tags: [mtproxy, mtproxy-install]
+
+- name: "install dependencies with yum"
+  yum:
+    name: "{{ item }}"
+  with_items:
+    - "{{ mtproxy_dependencies }}"
+  when: ansible_os_family == "RedHat"
+  tags: [mtproxy, mtproxy-install]
+
+- name: "get source"
+  git:
+    repo: "{{ mtproxy_source }}"
+    version: "{{ mtproxy_version }}"
+    dest: "{{ mtproxy_source_path }}"
+    force: yes
+  tags: [mtproxy, mtproxy-install]
+
+- name: "build"
+  command: "make"
+  args:
+    chdir: "{{ mtproxy_source_path }}"
+    creates: "objs/bin/mtproto-proxy"
+  notify: "(MTProxy) restart"
+  tags: [mtproxy, mtproxy-install]
+
+- name: "add binary to /usr/bin"
+  copy:
+    src: "{{ mtproxy_source_path }}/objs/bin/mtproto-proxy"
+    dest: "/usr/bin/mtproto-proxy"
+    remote_src: yes
+    mode: 0755
+    owner: root
+    group: root
+  notify: "(MTProxy) restart"
+  tags: [mtproxy, mtproxy-install]
+
+- name: "get secret.conf file"
+  get_url:
+    url: "https://core.telegram.org/getProxySecret"
+    dest: "{{ mtproxy_aes_pwd }}"
+    mode: 0640
+    owner: "{{ mtproxy_user }}"
+  when: mtproxy_aes_pwd | length > 0
+  tags: [mtproxy, mtproxy-install, mtproxy-configure]
+
+- name: "get proxy config"
+  get_url:
+    url: "https://core.telegram.org/getProxyConfig"
+    dest: "{{ mtproxy_config }}"
+    mode: 0640
+    owner: "{{ mtproxy_user }}"
+  tags: [mtproxy, mtproxy-install]
+
+- name: "upload systemd service"
+  template:
+    src: "mtproxy.service.j2"
+    dest: "/etc/systemd/system/{{ mtproxy_service_name }}.service"
+    mode: 0644
+    owner: root
+    group: root
+  notify:
+    - "(MTProxy) reload daemon"
+    - "(MTProxy) restart"
+  tags: [mtproxy, mtproxy-install, mtproxy-configure]
+
+- name: "enable mtproxy service"
+  systemd:
+    name: "{{ mtproxy_service_name }}.service"
+    enabled: "{{ mtproxy_service_enabled }}"
+  when: ansible_service_mgr == 'systemd'
+  tags: [mtproxy, mtproxy-install, mtproxy-configure]
+
+- name: "update mtproxy config"
+  cron:
+    name: "Update MTProxy config"
+    special_time: daily
+    job: "curl -sf https://core.telegram.org/getProxyConfig -o {{ mtproxy_config }} \
+      && chown {{ mtproxy_user }} {{ mtproxy_config }} \
+      && systemctl restart {{ mtproxy_service_name }}"
+  when: mtproxy_config_update
+  tags: [mtproxy, mtproxy-install, mtproxy-configure]
+
+- meta: flush_handlers

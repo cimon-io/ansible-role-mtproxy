@@ -1,0 +1,11 @@
+---
+- name: "(MTProxy) reload daemon"
+  systemd:
+    daemon_reload: True
+  when: ansible_service_mgr == 'systemd'
+
+- name: "(MTProxy) restart"
+  service:
+    name: "{{ mtproxy_service_name }}"
+    state: restarted
+  when: ansible_service_mgr == 'systemd'
