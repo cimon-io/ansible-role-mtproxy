@@ -22,7 +22,7 @@
 - name: "create dirs"
   file:
     path: "{{ item }}"
-    mode: 0750
+    mode: 0755
     owner: "{{ mtproxy_user }}"
     group: "{{ mtproxy_user }}"
     state: directory
