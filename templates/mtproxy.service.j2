@@ -4,12 +4,13 @@ After=network.target
 
 [Service]
 Type=simple
+User={{ mtproxy_user }}
+Group={{ mtproxy_user }}
 Restart=always
 RestartSec=5
 WorkingDirectory={{ mtproxy_config_path }}
 LimitNOFILE={{ mtproxy_limit_nofile }}
 ExecStart=/usr/bin/mtproto-proxy -u {{ mtproxy_user }} \
-  -u {{ mtproxy_user }} \
   -p {{ mtproxy_port }} \
   -H {{ mtproxy_http_ports | join(",") }} \
 {% if mtproxy_mtproto_secret | length > 0 %}

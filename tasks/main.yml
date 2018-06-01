@@ -75,6 +75,13 @@
   notify: "(MTProxy) restart"
   tags: [mtproxy, mtproxy-install]
 
+- name: "set net_bind_service capability"
+  capabilities:
+    path: "/usr/bin/mtproto-proxy"
+    capability: cap_net_bind_service+ep
+    state: present
+  tags: [mtproxy, mtproxy-install]
+
 - name: "get secret.conf file"
   get_url:
     url: "https://core.telegram.org/getProxySecret"
