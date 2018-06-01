@@ -11,33 +11,85 @@ LimitNOFILE={{ mtproxy_limit_nofile }}
 ExecStart=/usr/bin/mtproto-proxy -u {{ mtproxy_user }} \
   -u {{ mtproxy_user }} \
   -p {{ mtproxy_port }} \
-  -H {{ mtproxy_http_ports | join(",")}} \
-{% if mtproxy_mtproto_secret | length > 0 %}  -S {{ mtproxy_mtproto_secret }} \{% endif %}
-{% if mtproxy_aes_pwd | length > 0 %}  --aes-pwd {{ mtproxy_aes_pwd }} \{% endif %}
-{% if mtproxy_ipv6 %} --ipv6 \{% endif %}
-{% if mtproxy_max_special_connections != 0 %}  -C {{ mtproxy_max_special_connections }} \{% endif %}
-{% if mtproxy_slaves != 0 %} -M {{ mtproxy_slaves }} \{% endif %}
-{% if mtproxy_proxy_tag | length > 0 %}  -P {{ mtproxy_proxy_tag }} \{% endif %}
-{% if mtproxy_ping_interval != 5 %}  -T {{ mtproxy_ping_interval }} \{% endif %}
-{% if mtproxy_window_clamp != 0 %} -W {{ mtproxy_window_clamp }} \{% endif %}
-{% if mtproxy_backlog != 0 %}  -b {{ mtproxy_backlog }} \{% endif %}
-{% if mtproxy_connections != 0 %}  -c {{ mtproxy_connections }} \{% endif %}
-{% if mtproxy_log | length > 0 %}  -l {{ mtproxy_log }} \{% endif %}
-{% if mtproxy_verbosity != 0 %}  -v {{ mtproxy_verbosity }} \{% endif %}
-{% if mtproxy_msg_buffers_size != 268435456 %} --msg-buffers-size {{ mtproxy_msg_buffers_size }} \{% endif %}
-{% if mtproxy_disable_tcp %}  --disable-tcp \{% endif %}
-{% if mtproxy_crc32c %} --crc32c \{% endif %}
-{% if mtproxy_cpu_threads != 8 %}  --cpu-threads {{ mtproxy_cpu_threads }} \{% endif %}
-{% if mtproxy_io_threads != 16 %} --io-threads {{ mtproxy_io_threads }} \{% endif %}
-{% if mtproxy_allow_skip_dh %}  --allow-skip-dh \{% endif %}
-{% if mtproxy_force_dh %} --force-dh \{% endif %}
-{% if mtproxy_max_accept_rate != 0 %}  --max-accept-rate {{ mtproxy_max_accept_rate }} \{% endif %}
-{% if mtproxy_max_dh_accept_rate != 0 %} --max-dh-accept-rate {{ mtproxy_max_dh_accept_rate }} \{% endif %}
-{% if mtproxy_multithread != 0 %}  --multithread {{ mtproxy_multithread }} \{% endif %}
-{% if mtproxy_tcp_cpu_threads != 0 %}  --tcp-cpu-threads {{ mtproxy_tcp_cpu_threads }} \{% endif %}
-{% if mtproxy_tcp_iothreads != 0 %}  --tcp-iothreads {{ mtproxy_tcp_iothreads }} \{% endif %}
-{% if mtproxy_nat_info | length > 0 %} --nat-info {{ mtproxy_nat_info }} \{% endif %}
-{% if mtproxy_address | length > 0 %}  --address {{ mtproxy_address }} \{% endif %}
+  -H {{ mtproxy_http_ports | join(",") }} \
+{% if mtproxy_mtproto_secret | length > 0 %}
+  -S {{ mtproxy_mtproto_secret }} \
+{% endif %}
+{% if mtproxy_aes_pwd | length > 0 %}
+  --aes-pwd {{ mtproxy_aes_pwd }} \
+{% endif %}
+{% if mtproxy_ipv6 %}
+  --ipv6 \
+{% endif %}
+{% if mtproxy_max_special_connections != 0 %}
+  -C {{ mtproxy_max_special_connections }} \
+{% endif %}
+{% if mtproxy_slaves != 0 %}
+  -M {{ mtproxy_slaves }} \
+{% endif %}
+{% if mtproxy_proxy_tag | length > 0 %}
+  -P {{ mtproxy_proxy_tag }} \
+{% endif %}
+{% if mtproxy_ping_interval != 5 %}
+  -T {{ mtproxy_ping_interval }} \
+{% endif %}
+{% if mtproxy_window_clamp != 0 %}
+  -W {{ mtproxy_window_clamp }} \
+{% endif %}
+{% if mtproxy_backlog != 0 %}
+  -b {{ mtproxy_backlog }} \
+{% endif %}
+{% if mtproxy_connections != 0 %}
+  -c {{ mtproxy_connections }} \
+{% endif %}
+{% if mtproxy_log | length > 0 %}
+  -l {{ mtproxy_log }} \
+{% endif %}
+{% if mtproxy_verbosity != 0 %}
+  -v {{ mtproxy_verbosity }} \
+{% endif %}
+{% if mtproxy_msg_buffers_size != 268435456 %}
+  --msg-buffers-size {{ mtproxy_msg_buffers_size }} \
+{% endif %}
+{% if mtproxy_disable_tcp %}
+  --disable-tcp \
+{% endif %}
+{% if mtproxy_crc32c %}
+  --crc32c \
+{% endif %}
+{% if mtproxy_cpu_threads != 8 %}
+  --cpu-threads {{ mtproxy_cpu_threads }} \
+{% endif %}
+{% if mtproxy_io_threads != 16 %}
+  --io-threads {{ mtproxy_io_threads }} \
+{% endif %}
+{% if mtproxy_allow_skip_dh %}
+  --allow-skip-dh \
+{% endif %}
+{% if mtproxy_force_dh %}
+  --force-dh \
+{% endif %}
+{% if mtproxy_max_accept_rate != 0 %}
+  --max-accept-rate {{ mtproxy_max_accept_rate }} \
+{% endif %}
+{% if mtproxy_max_dh_accept_rate != 0 %}
+  --max-dh-accept-rate {{ mtproxy_max_dh_accept_rate }} \
+{% endif %}
+{% if mtproxy_multithread != 0 %}
+  --multithread {{ mtproxy_multithread }} \
+{% endif %}
+{% if mtproxy_tcp_cpu_threads != 0 %}
+  --tcp-cpu-threads {{ mtproxy_tcp_cpu_threads }} \
+{% endif %}
+{% if mtproxy_tcp_iothreads != 0 %}
+  --tcp-iothreads {{ mtproxy_tcp_iothreads }} \
+{% endif %}
+{% if mtproxy_nat_info | length > 0 %}
+ --nat-info {{ mtproxy_nat_info }} \
+{% endif %}
+{% if mtproxy_address | length > 0 %}
+  --address {{ mtproxy_address }} \
+{% endif %}
   {{ mtproxy_config }}
 
 [Install]

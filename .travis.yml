@@ -13,9 +13,6 @@ env:
   - IMAGE_NAME="debian9"
   - IMAGE_NAME="centos7"
 
-install:
-  - pip install ansible=="2.5.1.0"
-
 script:
   - docker build -t $IMAGE_NAME -f tests/Dockerfile-$IMAGE_NAME .
 
