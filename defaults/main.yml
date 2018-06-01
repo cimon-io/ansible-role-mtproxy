@@ -6,7 +6,7 @@ mtproxy_source_path: "/usr/local/src/mtproxy"
 mtproxy_config_path: "/etc/mtproxy"
 
 mtproxy_service_name: "mtproxy"
-mtproxy_enabled: True
+mtproxy_service_enabled: True
 
 # 0 - disabled
 mtproxy_ipv6: False
