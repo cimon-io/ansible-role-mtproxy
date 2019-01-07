@@ -5,7 +5,7 @@ galaxy_info:
 
   license: MIT
 
-  min_ansible_version: 2.4
+  min_ansible_version: 2.6
 
   platforms:
   - name: Ubuntu
@@ -27,7 +27,6 @@ galaxy_info:
   galaxy_tags:
     - mtproxy
     - mtproto
-    - telegram-proxy
     - telegram
 
 dependencies: []

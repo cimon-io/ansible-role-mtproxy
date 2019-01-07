@@ -1,5 +1,6 @@
 ---
-- include_vars: "{{ item }}"
+- name: "include OS-specific variables"
+  include_vars: "{{ item }}"
   with_first_found:
     - "../vars/{{ ansible_os_family }}.yml"
     - "../vars/os_defaults.yml"
@@ -32,20 +33,22 @@
 
 - name: "install dependencies with apt"
   apt:
-    name: "{{ item }}"
+    name: "{{ mtproxy_dependencies }}"
     update_cache: yes
     cache_valid_time: "{{ apt_cache_valid_time }}"
-  with_items:
-    - "{{ mtproxy_dependencies }}"
   when: ansible_os_family == "Debian"
+  retries: "{{ remote_package_retries }}"
+  register: apt_result
+  until: apt_result is succeeded
   tags: [mtproxy, mtproxy-install]
 
 - name: "install dependencies with yum"
   yum:
-    name: "{{ item }}"
-  with_items:
-    - "{{ mtproxy_dependencies }}"
+    name: "{{ mtproxy_dependencies }}"
   when: ansible_os_family == "RedHat"
+  retries: "{{ remote_package_retries }}"
+  register: yum_result
+  until: yum_result is succeeded
   tags: [mtproxy, mtproxy-install]
 
 - name: "get source"

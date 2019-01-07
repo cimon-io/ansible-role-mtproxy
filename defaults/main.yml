@@ -46,3 +46,4 @@ mtproxy_config_update: True
 
 ansible_become: yes
 apt_cache_valid_time: 86400
+remote_package_retries: 5
