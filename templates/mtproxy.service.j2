@@ -47,7 +47,7 @@ ExecStart=/usr/bin/mtproto-proxy -u {{ mtproxy_user }} \
   -l {{ mtproxy_log }} \
 {% endif %}
 {% if mtproxy_verbosity != 0 %}
-  -v {{ mtproxy_verbosity }} \
+  -v \
 {% endif %}
 {% if mtproxy_msg_buffers_size != 268435456 %}
   --msg-buffers-size {{ mtproxy_msg_buffers_size }} \
