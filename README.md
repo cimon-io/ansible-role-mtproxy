@@ -37,7 +37,7 @@ mtproxy_connections: 0
 mtproxy_log: ""
 mtproxy_port: 8888
 mtproxy_user: "mtproxy"
-mtproxy_verbosity: 0
+mtproxy_verbosity: False
 mtproxy_aes_pwd: "{{ mtproxy_config_path }}/proxy-secret"
 mtproxy_config: "{{ mtproxy_config_path }}/proxy-multi.conf"
 mtproxy_msg_buffers_size: 268435456
